@@ -1,0 +1,537 @@
+{
+    "padrao_imagens": [
+        16,
+        16,
+        "rgb"
+    ],
+    "acacia_log.png": [
+        105,
+        99,
+        89
+    ],
+    "andesite.png": [
+        130,
+        131,
+        131
+    ],
+    "beacon.png": [
+        116,
+        221,
+        215
+    ],
+    "bedrock.png": [
+        83,
+        83,
+        83
+    ],
+    "birch_log.png": [
+        206,
+        206,
+        201
+    ],
+    "birch_log_top.png": [
+        184,
+        166,
+        121
+    ],
+    "black_wool.png": [
+        20,
+        21,
+        25
+    ],
+    "blue_ice.png": [
+        116,
+        167,
+        253
+    ],
+    "bookshelf.png": [
+        107,
+        88,
+        57
+    ],
+    "bricks.png": [
+        146,
+        99,
+        86
+    ],
+    "cactus_side.png": [
+        12,
+        92,
+        22
+    ],
+    "cactus_top.png": [
+        10,
+        76,
+        18
+    ],
+    "cake_top.png": [
+        175,
+        157,
+        158
+    ],
+    "carved_pumpkin.png": [
+        142,
+        76,
+        12
+    ],
+    "chiseled_sandstone.png": [
+        215,
+        208,
+        154
+    ],
+    "chiseled_stone_bricks.png": [
+        118,
+        118,
+        118
+    ],
+    "chorus_flower_dead.png": [
+        98,
+        63,
+        96
+    ],
+    "chorus_plant.png": [
+        96,
+        59,
+        96
+    ],
+    "clay.png": [
+        158,
+        164,
+        176
+    ],
+    "coal_block.png": [
+        18,
+        18,
+        18
+    ],
+    "coal_ore.png": [
+        115,
+        115,
+        115
+    ],
+    "coarse_dirt.png": [
+        119,
+        85,
+        59
+    ],
+    "cobblestone.png": [
+        122,
+        122,
+        122
+    ],
+    "cracked_stone_bricks.png": [
+        118,
+        118,
+        118
+    ],
+    "crafting_table_front.png": [
+        115,
+        95,
+        63
+    ],
+    "crafting_table_top.png": [
+        107,
+        71,
+        42
+    ],
+    "dark_oak_log.png": [
+        52,
+        40,
+        23
+    ],
+    "dark_oak_planks.png": [
+        61,
+        39,
+        18
+    ],
+    "dark_prismarine.png": [
+        59,
+        87,
+        75
+    ],
+    "diamond_block.png": [
+        97,
+        219,
+        213
+    ],
+    "diamond_ore.png": [
+        129,
+        140,
+        143
+    ],
+    "diorite.png": [
+        179,
+        179,
+        182
+    ],
+    "dirt.png": [
+        134,
+        96,
+        67
+    ],
+    "dropper_front.png": [
+        116,
+        116,
+        116
+    ],
+    "emerald_block.png": [
+        81,
+        217,
+        117
+    ],
+    "emerald_ore.png": [
+        109,
+        128,
+        116
+    ],
+    "enchanting_table_top.png": [
+        103,
+        64,
+        59
+    ],
+    "end_portal_frame_top.png": [
+        89,
+        117,
+        96
+    ],
+    "end_stone.png": [
+        221,
+        223,
+        165
+    ],
+    "end_stone_bricks.png": [
+        225,
+        230,
+        170
+    ],
+    "furnace_front.png": [
+        78,
+        78,
+        78
+    ],
+    "furnace_front_on.png": [
+        125,
+        102,
+        85
+    ],
+    "furnace_side.png": [
+        113,
+        113,
+        113
+    ],
+    "glowstone.png": [
+        143,
+        118,
+        69
+    ],
+    "gold_block.png": [
+        249,
+        236,
+        78
+    ],
+    "gold_ore.png": [
+        143,
+        139,
+        124
+    ],
+    "granite.png": [
+        153,
+        113,
+        98
+    ],
+    "grass_block_side.png": [
+        126,
+        107,
+        65
+    ],
+    "gravel.png": [
+        126,
+        124,
+        122
+    ],
+    "green_wool.png": [
+        84,
+        109,
+        27
+    ],
+    "hay_block_side.png": [
+        157,
+        116,
+        18
+    ],
+    "ice.png": [
+        125,
+        173,
+        255
+    ],
+    "iron_block.png": [
+        219,
+        219,
+        219
+    ],
+    "iron_ore.png": [
+        135,
+        130,
+        126
+    ],
+    "jack_o_lantern.png": [
+        185,
+        133,
+        28
+    ],
+    "jukebox_side.png": [
+        100,
+        67,
+        50
+    ],
+    "jungle_log.png": [
+        87,
+        67,
+        26
+    ],
+    "lapis_block.png": [
+        38,
+        67,
+        137
+    ],
+    "lapis_ore.png": [
+        102,
+        112,
+        134
+    ],
+    "light_gray_wool.png": [
+        142,
+        142,
+        134
+    ],
+    "lime_wool.png": [
+        112,
+        185,
+        25
+    ],
+    "magenta_wool.png": [
+        189,
+        68,
+        179
+    ],
+    "melon_side.png": [
+        141,
+        145,
+        36
+    ],
+    "melon_top.png": [
+        151,
+        153,
+        36
+    ],
+    "mossy_cobblestone.png": [
+        103,
+        121,
+        103
+    ],
+    "mossy_stone_bricks.png": [
+        114,
+        119,
+        106
+    ],
+    "netherrack.png": [
+        111,
+        54,
+        52
+    ],
+    "nether_bricks.png": [
+        44,
+        22,
+        26
+    ],
+    "nether_quartz_ore.png": [
+        125,
+        84,
+        79
+    ],
+    "note_block.png": [
+        100,
+        67,
+        50
+    ],
+    "oak_log.png": [
+        102,
+        81,
+        49
+    ],
+    "oak_planks.png": [
+        156,
+        127,
+        78
+    ],
+    "observer_back.png": [
+        68,
+        66,
+        66
+    ],
+    "observer_front.png": [
+        102,
+        101,
+        101
+    ],
+    "observer_side.png": [
+        62,
+        60,
+        60
+    ],
+    "observer_top.png": [
+        97,
+        97,
+        97
+    ],
+    "obsidian.png": [
+        20,
+        18,
+        29
+    ],
+    "orange_wool.png": [
+        240,
+        118,
+        19
+    ],
+    "packed_ice.png": [
+        165,
+        194,
+        245
+    ],
+    "pink_wool.png": [
+        237,
+        141,
+        172
+    ],
+    "piston_side.png": [
+        106,
+        102,
+        95
+    ],
+    "piston_top_sticky.png": [
+        141,
+        146,
+        99
+    ],
+    "polished_diorite.png": [
+        183,
+        183,
+        185
+    ],
+    "polished_granite.png": [
+        159,
+        114,
+        98
+    ],
+    "prismarine_bricks.png": [
+        99,
+        160,
+        143
+    ],
+    "pumpkin_side.png": [
+        197,
+        120,
+        23
+    ],
+    "pumpkin_top.png": [
+        192,
+        118,
+        21
+    ],
+    "redstone_block.png": [
+        171,
+        27,
+        9
+    ],
+    "redstone_lamp.png": [
+        70,
+        43,
+        26
+    ],
+    "redstone_lamp_on.png": [
+        119,
+        89,
+        55
+    ],
+    "redstone_ore.png": [
+        132,
+        107,
+        107
+    ],
+    "red_nether_bricks.png": [
+        68,
+        4,
+        6
+    ],
+    "sand.png": [
+        219,
+        211,
+        160
+    ],
+    "sandstone.png": [
+        216,
+        209,
+        157
+    ],
+    "sandstone_top.png": [
+        218,
+        210,
+        158
+    ],
+    "slime_block.png": [
+        120,
+        200,
+        101
+    ],
+    "sponge.png": [
+        194,
+        195,
+        84
+    ],
+    "spruce_log.png": [
+        45,
+        28,
+        12
+    ],
+    "spruce_planks.png": [
+        103,
+        77,
+        46
+    ],
+    "stone.png": [
+        125,
+        125,
+        125
+    ],
+    "stone_bricks.png": [
+        122,
+        122,
+        122
+    ],
+    "tnt_side.png": [
+        169,
+        92,
+        71
+    ],
+    "tnt_top.png": [
+        130,
+        65,
+        47
+    ],
+    "wet_sponge.png": [
+        160,
+        158,
+        63
+    ],
+    "white_wool.png": [
+        233,
+        236,
+        236
+    ],
+    "yellow_wool.png": [
+        248,
+        197,
+        39
+    ]
+}
