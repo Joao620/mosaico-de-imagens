@@ -38,6 +38,9 @@ typedef struct {
 unsigned char* acesso(int alturaCortes, int larguraCortes,
     int alturaImagem, int larguraImagem, unsigned char* pPixelsImagem);
 
+unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
+    unsigned char* comparacoes, int tamComp);
+
 unsigned char mediaCanalRecorte(coordenadas coordenadasCorte,
     imagem imagemBase, int canal);
 
@@ -58,23 +61,33 @@ int main()
     44, 51, 22, 217, 112, 25, 46, 126, 141, 185, 142, 53, 97, 221, 202, 47, 27, 20, 
     5, 186, 177, 139, 146, 204, 153, 198, 41, 114, 72, 87, 237, 160, 4, 21, 222, 6};
 
-    /*
-    {{165, 11, 125}, {45, 244, 31}, {74, 195, 118}, {208, 164, 119}, {23, 230, 64}, {84, 210, 60}, {200, 9, 65}, {13, 233, 196}},
-    {{104, 39, 162}, {174, 75, 235}, {30, 251, 248}, {106, 107, 224}, {206, 116, 1}, {92, 89, 215}, {109, 49, 250}, {192, 67, 93}},
-    {{38, 129, 167}, {66, 77, 247}, {176, 178, 86}, {147, 26, 148}, {15, 98, 213}, {73, 226, 253}, {135, 231, 124}, {137, 18, 29}},
-    {{218, 189, 207}, {236, 90, 42}, {12, 56, 54}, {199, 82, 110}, {149, 241, 143}, {246, 71, 120}, {8, 223, 163}, {216, 91, 252}},
-    {{102, 190, 171}, {201, 254, 188}, {166, 34, 103}, {59, 105, 134}, {173, 181, 132}, {55, 249, 211}, {19, 43, 70}, {108, 17, 136}},
-    {{234, 193, 168}, {194, 83, 79}, {128, 96, 131}, {203, 80, 212}, {78, 209, 227}, {3, 187, 95}, {88, 40, 228}, {0, 100, 101}},
-    {{144, 48, 36}, {232, 58, 182}, {14, 10, 32}, {94, 150, 16}, {44, 51, 22}, {217, 112, 25}, {46, 126, 141}, {185, 142, 53}},
-    {{97, 221, 202}, {47, 27, 20}, {5, 186, 177}, {139, 146, 204}, {153, 198, 41}, {114, 72, 87}, {237, 160, 4}, {21, 222, 6}}
-    */
+    
+    // {{165, 11, 125}, {45, 244, 31}, {74, 195, 118}, {208, 164, 119}, {23, 230, 64}, {84, 210, 60}, {200, 9, 65}, {13, 233, 196}},
+    // {{104, 39, 162}, {174, 75, 235}, {30, 251, 248}, {106, 107, 224}, {206, 116, 1}, {92, 89, 215}, {109, 49, 250}, {192, 67, 93}},
+    // {{38, 129, 167}, {66, 77, 247}, {176, 178, 86}, {147, 26, 148}, {15, 98, 213}, {73, 226, 253}, {135, 231, 124}, {137, 18, 29}},
+    // {{218, 189, 207}, {236, 90, 42}, {12, 56, 54}, {199, 82, 110}, {149, 241, 143}, {246, 71, 120}, {8, 223, 163}, {216, 91, 252}},
+    // {{102, 190, 171}, {201, 254, 188}, {166, 34, 103}, {59, 105, 134}, {173, 181, 132}, {55, 249, 211}, {19, 43, 70}, {108, 17, 136}},
+    // {{234, 193, 168}, {194, 83, 79}, {128, 96, 131}, {203, 80, 212}, {78, 209, 227}, {3, 187, 95}, {88, 40, 228}, {0, 100, 101}},
+    // {{144, 4 178, 86, 147, 26, 148, 15, 98, 213, 73, 226, 253, 135, 231, 124, 137, 
+    // 18, 29, 218, 189, 207, 236, 90, 42, 12, 56, 54, 199, 82, 110, 149, 241, 143, 
+    // 246, 71, 120, 8, 223, 163, 216, 91, 252, 102, 190, 171, 201, 254, 188, 166, 34, 
+    // 103, 59,8, 36}, {232, 58, 182}, {14, 10, 32}, {94, 150, 16}, {44, 51, 22}, {217, 112, 25}, {46, 126, 141}, {185, 142, 53}},
+    // {{97, 221, 202}, {47, 27, 20}, {5, 186, 177}, {139, 146, 204}, {153, 198, 41}, {114, 72, 87}, {237, 160, 4}, {21, 222, 6}}
 
+    unsigned char lista2[] = 
+    {160, 2, 218, 36, 114, 142, 10, 236, 69, 155, 231, 4, 158, 251, 113, 108, 130, 199, 
+    198, 203, 193, 254, 54, 154, 134, 246, 252};
+    
+    // {{160, 2, 218}, {36, 114, 142}, {10, 236, 69}},
+    // {{155, 231, 4}, {158, 251, 113}, {108, 130, 199}},
+    // {{198, 203, 193}, {254, 54, 154}, 2, 2, 8, 8, lista
 
+    unsigned int* joao = imagemMaisProxima(lista, 192, lista2, 27);
 
-    unsigned char* joao = acesso(2, 2, 8, 8, lista);
-
-    for(int i = 0; i < 8 * 8; i++)
-        printf("%i \n", joao[i]);
+    for(int i = 0; i < 192/3; i++)
+    {
+        printf("media %d : %d\n", i, joao[i]);
+    }
 
     free(joao);
 
@@ -83,10 +96,10 @@ int main()
 
 
 //vai pegar uma matrix de pixels e o largura e altura de cada Corte
-unsigned char* acesso(int alturaCortes, int larguraCortes,
+unsigned char* media(int alturaCortes, int larguraCortes,
     int alturaImagem, int larguraImagem, unsigned char* pPixelsImagem)
 {
-    //fica esperto que o pixels é uma mentira
+    //fica esperto que o pixels é    uma mentira
     //na verdade ele é um array com 3 dimensoes
     //sendo a primeira e a segunda altura e largura
     //e a terceira 3 por ser as cores RGB
@@ -102,7 +115,6 @@ unsigned char* acesso(int alturaCortes, int larguraCortes,
     int quantidadeCortes = quantidadeCortesX * quantidadeCortesY;
 
     imagem imagemBase;
-
 
     imagemBase.imagem = pPixelsImagem;
     imagemBase.largura = larguraImagem;
@@ -134,13 +146,46 @@ unsigned char* acesso(int alturaCortes, int larguraCortes,
             unsigned char mediaCanalB = mediaCanalRecorte(coordenadasCorte, imagemBase, 2);
             pMediasCortes[indexCanalB] = mediaCanalB;
 
-            printf("na interacao x: %d y: %d o resultado foi\n", x, y);
-            printf("media R: %u, media B: %u, media B: %u\n", mediaCanalR, mediaCanalG, mediaCanalB);
-
         }
 
     return pMediasCortes;
 
+}
+
+unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
+    unsigned char* comparacoes, int tamComp)
+{
+    int quantMedias = tamMedias / 3;
+    int quantComp = tamComp / 3;
+
+    unsigned int* indexMaisProximos = (unsigned int*) malloc(
+        sizeof(int) * quantMedias);
+
+
+    for(int media = 0; media < quantMedias; media++)
+    {
+        int indiceMenorDif = 0;
+        int corMaisProx = 256*3;
+        for(int comparacao = 0; comparacao < quantComp; comparacao++)
+        {
+            int diferenca = 0;
+            //disasemble then unwrappe this
+            for(int cores = 0; cores < 3; cores++)
+            {
+                diferenca += abs(medias[media*3+cores] - 
+                    comparacoes[comparacao*3+cores]);
+            }
+
+            if(diferenca < corMaisProx)
+            {
+                indiceMenorDif = comparacao;
+                corMaisProx = diferenca;
+            }
+        }
+        indexMaisProximos[media] = indiceMenorDif;
+    }
+
+    return indexMaisProximos;
 }
 
 //pega a media de cores de um canal de uma parte da imagem

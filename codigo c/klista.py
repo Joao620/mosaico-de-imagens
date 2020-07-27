@@ -2,8 +2,8 @@ from random import randint, sample
 
 textoMeste = ""
 
-xx = 8
-yy = 8
+xx = 3
+yy = 3
 zz = 3
 
 
