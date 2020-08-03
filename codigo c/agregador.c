@@ -1,20 +1,3 @@
-
-/*
-
-lista de mentirinha
-{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}
-==
-{
-    [[1, 2, 3], [4, 5, 6]], 
-    [[7, 8, 9], [10, 11, 12]], 
-    [[13, 14, 15], [16, 17, 18]]
-}
-0, 0, 0, 2, 3, 3
-x  y  z  sx sy sz
-y*4+x
-(y*(sz*sx)) + (x*sz+z)
-
-*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -35,10 +18,11 @@ typedef struct {
     int tamanho;
 } imagem;
 
-unsigned char* acesso(int alturaCortes, int larguraCortes,
+
+unsigned char* media(int alturaCortes, int larguraCortes,
     int alturaImagem, int larguraImagem, unsigned char* pPixelsImagem);
 
-unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
+int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
     unsigned char* comparacoes, int tamComp);
 
 unsigned char mediaCanalRecorte(coordenadas coordenadasCorte,
@@ -46,59 +30,44 @@ unsigned char mediaCanalRecorte(coordenadas coordenadasCorte,
 
 int pegarItemLista3D(int x, int y, int z, int tamX, int tamZ);
 
-int main() 
-{ 
-    unsigned char lista[] = 
-    {165, 11, 125, 45, 244, 31, 74, 195, 118, 208, 164, 119, 23, 230, 64, 84, 210, 60, 
-    200, 9, 65, 13, 233, 196, 104, 39, 162, 174, 75, 235, 30, 251, 248, 106, 107, 
-    224, 206, 116, 1, 92, 89, 215, 109, 49, 250, 192, 67, 93, 38, 129, 167, 66, 77, 
-    247, 176, 178, 86, 147, 26, 148, 15, 98, 213, 73, 226, 253, 135, 231, 124, 137, 
-    18, 29, 218, 189, 207, 236, 90, 42, 12, 56, 54, 199, 82, 110, 149, 241, 143, 
-    246, 71, 120, 8, 223, 163, 216, 91, 252, 102, 190, 171, 201, 254, 188, 166, 34, 
-    103, 59, 105, 134, 173, 181, 132, 55, 249, 211, 19, 43, 70, 108, 17, 136, 234, 
-    193, 168, 194, 83, 79, 128, 96, 131, 203, 80, 212, 78, 209, 227, 3, 187, 95, 
-    88, 40, 228, 0, 100, 101, 144, 48, 36, 232, 58, 182, 14, 10, 32, 94, 150, 16, 
-    44, 51, 22, 217, 112, 25, 46, 126, 141, 185, 142, 53, 97, 221, 202, 47, 27, 20, 
-    5, 186, 177, 139, 146, 204, 153, 198, 41, 114, 72, 87, 237, 160, 4, 21, 222, 6};
-
+// int main() 
+// {
+//     FILE *fp;
+//     fp = fopen("aaa.bmp", "r+");
     
-    // {{165, 11, 125}, {45, 244, 31}, {74, 195, 118}, {208, 164, 119}, {23, 230, 64}, {84, 210, 60}, {200, 9, 65}, {13, 233, 196}},
-    // {{104, 39, 162}, {174, 75, 235}, {30, 251, 248}, {106, 107, 224}, {206, 116, 1}, {92, 89, 215}, {109, 49, 250}, {192, 67, 93}},
-    // {{38, 129, 167}, {66, 77, 247}, {176, 178, 86}, {147, 26, 148}, {15, 98, 213}, {73, 226, 253}, {135, 231, 124}, {137, 18, 29}},
-    // {{218, 189, 207}, {236, 90, 42}, {12, 56, 54}, {199, 82, 110}, {149, 241, 143}, {246, 71, 120}, {8, 223, 163}, {216, 91, 252}},
-    // {{102, 190, 171}, {201, 254, 188}, {166, 34, 103}, {59, 105, 134}, {173, 181, 132}, {55, 249, 211}, {19, 43, 70}, {108, 17, 136}},
-    // {{234, 193, 168}, {194, 83, 79}, {128, 96, 131}, {203, 80, 212}, {78, 209, 227}, {3, 187, 95}, {88, 40, 228}, {0, 100, 101}},
-    // {{144, 4 178, 86, 147, 26, 148, 15, 98, 213, 73, 226, 253, 135, 231, 124, 137, 
-    // 18, 29, 218, 189, 207, 236, 90, 42, 12, 56, 54, 199, 82, 110, 149, 241, 143, 
-    // 246, 71, 120, 8, 223, 163, 216, 91, 252, 102, 190, 171, 201, 254, 188, 166, 34, 
-    // 103, 59,8, 36}, {232, 58, 182}, {14, 10, 32}, {94, 150, 16}, {44, 51, 22}, {217, 112, 25}, {46, 126, 141}, {185, 142, 53}},
-    // {{97, 221, 202}, {47, 27, 20}, {5, 186, 177}, {139, 146, 204}, {153, 198, 41}, {114, 72, 87}, {237, 160, 4}, {21, 222, 6}}
+//     fseek(fp, 0, SEEK_END); // seek to end of file
+//     int size = ftell(fp); // get current file pointer
+//     fseek(fp, 0, SEEK_SET); // seek back to beginning of file
 
-    unsigned char lista2[] = 
-    {160, 2, 218, 36, 114, 142, 10, 236, 69, 155, 231, 4, 158, 251, 113, 108, 130, 199, 
-    198, 203, 193, 254, 54, 154, 134, 246, 252};
-    
-    // {{160, 2, 218}, {36, 114, 142}, {10, 236, 69}},
-    // {{155, 231, 4}, {158, 251, 113}, {108, 130, 199}},
-    // {{198, 203, 193}, {254, 54, 154}, 2, 2, 8, 8, lista
 
-    unsigned int* joao = imagemMaisProxima(lista, 192, lista2, 27);
+//     char* lista1 = (char*) malloc(sizeof(char) * size);
 
-    for(int i = 0; i < 192/3; i++)
-    {
-        printf("media %d : %d\n", i, joao[i]);
-    }
+//     fread(lista1, sizeof(char), sizeof(char) * size, fp);
 
-    free(joao);
+//     fclose(fp);
 
-    return 0; 
-}
+//     unsigned char* joao = media(16, 16, 64, 64, lista1);
+
+//     for(int i = 0; i < 16; i++)
+//     {
+//         int rodada = i*3;
+//         printf("media RGB bloco %d: %d %d %d\n", i, joao[rodada], joao[rodada+1], joao[rodada+2]);
+//     }
+
+//     printf("rodada: %d\n", joao[16*3])
+
+//     free(joao);
+//     free(lista1);
+
+//     return 0; 
+// }
 
 
 //vai pegar uma matrix de pixels e o largura e altura de cada Corte
 unsigned char* media(int alturaCortes, int larguraCortes,
     int alturaImagem, int larguraImagem, unsigned char* pPixelsImagem)
 {
+
     //fica esperto que o pixels é    uma mentira
     //na verdade ele é um array com 3 dimensoes
     //sendo a primeira e a segunda altura e largura
@@ -107,12 +76,14 @@ unsigned char* media(int alturaCortes, int larguraCortes,
     //e o retorno vai ser um array normal
     //contendo a media de cada Corte
 
-    /*da um jeito de orderar essa poha*/
+    //printf("%d %d %d %d\n", alturaCortes, larguraCortes, alturaImagem, larguraImagem);
 
     int tamanhoImagem = alturaImagem * larguraImagem;
-    int quantidadeCortesX = alturaImagem / alturaCortes;
-    int quantidadeCortesY = larguraImagem / larguraCortes;
+    int quantidadeCortesY = alturaImagem / alturaCortes;
+    int quantidadeCortesX = larguraImagem / larguraCortes;
     int quantidadeCortes = quantidadeCortesX * quantidadeCortesY;
+
+    //printf("%d %d %d ", quantidadeCortesY, quantidadeCortesX, quantidadeCortes);
 
     imagem imagemBase;
 
@@ -123,11 +94,16 @@ unsigned char* media(int alturaCortes, int larguraCortes,
 
     coordenadas coordenadasCorte; 
 
-    unsigned char* pMediasCortes = (unsigned char*) malloc(sizeof(char) * quantidadeCortes * 3);
+    //printf("aaaaaaaa eu quero chorarrrrrrr\n");
 
-    for(int y = 0; y <= quantidadeCortesY; y++)
-        for(int x = 0; x <= quantidadeCortesX; x++)
+    unsigned char* pMediasCortes = (unsigned char*) malloc(sizeof(char) * 
+        quantidadeCortes * 3);
+
+    for(int y = 0; y < quantidadeCortesY; y++)
+    {
+        for(int x = 0; x < quantidadeCortesX; x++)
         {
+
             coordenadasCorte.top = alturaCortes * y;
             coordenadasCorte.botton = alturaCortes * (y + 1);
 
@@ -137,7 +113,7 @@ unsigned char* media(int alturaCortes, int larguraCortes,
             int indexCanalR = pegarItemLista3D(x, y, 0, quantidadeCortesX, 3);
             unsigned char mediaCanalR = mediaCanalRecorte(coordenadasCorte, imagemBase, 0);
             pMediasCortes[indexCanalR] = mediaCanalR;
-                
+
             int indexCanalG = pegarItemLista3D(x, y, 1, quantidadeCortesX, 3);
             unsigned char mediaCanalG = mediaCanalRecorte(coordenadasCorte, imagemBase, 1);
             pMediasCortes[indexCanalG] = mediaCanalG;
@@ -146,20 +122,51 @@ unsigned char* media(int alturaCortes, int larguraCortes,
             unsigned char mediaCanalB = mediaCanalRecorte(coordenadasCorte, imagemBase, 2);
             pMediasCortes[indexCanalB] = mediaCanalB;
 
+            //printf("x: %d y: %d ", x, y);
+
         }
+
+        //printf("\n");
+    }
+
+
+
+    // for(int y = 0; y < quantidadeCortesY; y++)
+    // {
+    //     for(int x = 0; x < quantidadeCortesX; x++)
+    //     {
+    //         coordenadasCorte.top = alturaCortes * y;
+    //         coordenadasCorte.botton = alturaCortes * (y + 1);
+
+    //         coordenadasCorte.left = larguraCortes * x;
+    //         coordenadasCorte.right = larguraCortes * (x + 1);
+
+    //         int indexCanalR = pegarItemLista3D(x, y, 0, quantidadeCortesX, 3);
+    //         unsigned char mediaCanalR = mediaCanalRecorte(coordenadasCorte, imagemBase, 0);
+    //         pMediasCortes[indexCanalR] = mediaCanalR;
+
+    //         int indexCanalG = pegarItemLista3D(x, y, 1, quantidadeCortesX, 3);
+    //         unsigned char mediaCanalG = mediaCanalRecorte(coordenadasCorte, imagemBase, 1);
+    //         pMediasCortes[indexCanalG] = mediaCanalG;
+
+    //         int indexCanalB = pegarItemLista3D(x, y, 2, quantidadeCortesX, 3);
+    //         unsigned char mediaCanalB = mediaCanalRecorte(coordenadasCorte, imagemBase, 2);
+    //         pMediasCortes[indexCanalB] = mediaCanalB;
+    //     }
+    // }
 
     return pMediasCortes;
 
 }
 
-unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
+int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
     unsigned char* comparacoes, int tamComp)
 {
     int quantMedias = tamMedias / 3;
     int quantComp = tamComp / 3;
 
-    unsigned int* indexMaisProximos = (unsigned int*) malloc(
-        sizeof(int) * quantMedias);
+    int* indexMaisProximos = (int*) malloc(
+        sizeof(int) * quantMedias + 1);
 
 
     for(int media = 0; media < quantMedias; media++)
@@ -185,6 +192,8 @@ unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias,
         indexMaisProximos[media] = indiceMenorDif;
     }
 
+    indexMaisProximos[quantMedias] = 42069;
+
     return indexMaisProximos;
 }
 
@@ -192,13 +201,16 @@ unsigned int* imagemMaisProxima(unsigned char* medias, int tamMedias,
 unsigned char mediaCanalRecorte(coordenadas coordenadasCorte,
     imagem imagemBase, int canal)
 {
-    int somaTemporaria = 0;
+    long int somaTemporaria = 0;
 
     for(int y = coordenadasCorte.top; y < coordenadasCorte.botton; y++)
+    {
         for(int x = coordenadasCorte.left; x < coordenadasCorte.right; x++)
+        {
             somaTemporaria += imagemBase.imagem[pegarItemLista3D(
                 x, y, canal, imagemBase.largura, 3)];
-
+        }
+    }
     //3 vem do tamanho da 3d dimensao da imagem
     //como a cor e rgb tem 3 char's no 3 dimensao
 
