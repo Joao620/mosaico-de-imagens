@@ -68,22 +68,21 @@ unsigned char* media(int alturaCortes, int larguraCortes,
     int alturaImagem, int larguraImagem, unsigned char* pPixelsImagem)
 {
 
-    //fica esperto que o pixels é    uma mentira
+    //fica esperto que o pixels é uma mentira
+    //ele não é um array simples
     //na verdade ele é um array com 3 dimensoes
     //sendo a primeira e a segunda altura e largura
-    //e a terceira 3 por ser as cores RGB
+    //e a terceira as cores RGB
 
-    //e o retorno vai ser um array normal
+    //e o retorno vai ser um array
     //contendo a media de cada Corte
 
-    //printf("%d %d %d %d\n", alturaCortes, larguraCortes, alturaImagem, larguraImagem);
+    //inicial umas variaveis alto explicativas
 
     int tamanhoImagem = alturaImagem * larguraImagem;
     int quantidadeCortesY = alturaImagem / alturaCortes;
     int quantidadeCortesX = larguraImagem / larguraCortes;
     int quantidadeCortes = quantidadeCortesX * quantidadeCortesY;
-
-    //printf("%d %d %d ", quantidadeCortesY, quantidadeCortesX, quantidadeCortes);
 
     imagem imagemBase;
 
@@ -92,27 +91,35 @@ unsigned char* media(int alturaCortes, int larguraCortes,
     imagemBase.altura = alturaImagem;
     imagemBase.tamanho = tamanhoImagem;
 
+    //inicia a coordenadasCorte para ser usada depois
     coordenadas coordenadasCorte; 
 
-    //printf("aaaaaaaa eu quero chorarrrrrrr\n");
-
+    //aloca o endereco que vai ser retornado
     unsigned char* pMediasCortes = (unsigned char*) malloc(sizeof(char) * 
         quantidadeCortes * 3);
 
+    //roda pela altura da imagem
     for(int y = 0; y < quantidadeCortesY; y++)
     {
+        //roda pela largura da imagem
         for(int x = 0; x < quantidadeCortesX; x++)
         {
 
+            //define o quadrado da imagem passada que vai ser feito a media
+            //o tamanho do quadrado é o tamanho das pixagens
             coordenadasCorte.top = alturaCortes * y;
             coordenadasCorte.botton = alturaCortes * (y + 1);
 
             coordenadasCorte.left = larguraCortes * x;
             coordenadasCorte.right = larguraCortes * (x + 1);
 
+            //pega o index na lista que vai ser retornada para guardar a media
             int indexCanalR = pegarItemLista3D(x, y, 0, quantidadeCortesX, 3);
+            //pegar a media do canal do bloco escolhido
             unsigned char mediaCanalR = mediaCanalRecorte(coordenadasCorte, imagemBase, 0);
             pMediasCortes[indexCanalR] = mediaCanalR;
+
+            //faz isso 3 vezes para cada canal RGB
 
             int indexCanalG = pegarItemLista3D(x, y, 1, quantidadeCortesX, 3);
             unsigned char mediaCanalG = mediaCanalRecorte(coordenadasCorte, imagemBase, 1);
@@ -121,79 +128,55 @@ unsigned char* media(int alturaCortes, int larguraCortes,
             int indexCanalB = pegarItemLista3D(x, y, 2, quantidadeCortesX, 3);
             unsigned char mediaCanalB = mediaCanalRecorte(coordenadasCorte, imagemBase, 2);
             pMediasCortes[indexCanalB] = mediaCanalB;
-
-            //printf("x: %d y: %d ", x, y);
-
         }
-
-        //printf("\n");
     }
-
-
-
-    // for(int y = 0; y < quantidadeCortesY; y++)
-    // {
-    //     for(int x = 0; x < quantidadeCortesX; x++)
-    //     {
-    //         coordenadasCorte.top = alturaCortes * y;
-    //         coordenadasCorte.botton = alturaCortes * (y + 1);
-
-    //         coordenadasCorte.left = larguraCortes * x;
-    //         coordenadasCorte.right = larguraCortes * (x + 1);
-
-    //         int indexCanalR = pegarItemLista3D(x, y, 0, quantidadeCortesX, 3);
-    //         unsigned char mediaCanalR = mediaCanalRecorte(coordenadasCorte, imagemBase, 0);
-    //         pMediasCortes[indexCanalR] = mediaCanalR;
-
-    //         int indexCanalG = pegarItemLista3D(x, y, 1, quantidadeCortesX, 3);
-    //         unsigned char mediaCanalG = mediaCanalRecorte(coordenadasCorte, imagemBase, 1);
-    //         pMediasCortes[indexCanalG] = mediaCanalG;
-
-    //         int indexCanalB = pegarItemLista3D(x, y, 2, quantidadeCortesX, 3);
-    //         unsigned char mediaCanalB = mediaCanalRecorte(coordenadasCorte, imagemBase, 2);
-    //         pMediasCortes[indexCanalB] = mediaCanalB;
-    //     }
-    // }
-
     return pMediasCortes;
 
 }
 
+//vai comparar as medias passadas e retornar as que mais se assemelham
 int* imagemMaisProxima(unsigned char* medias, int tamMedias, 
     unsigned char* comparacoes, int tamComp)
 {
+    //TODO adicionar um pouco de RNG
+
+    //tam é o tamanho exato da lista
+    //quant desconsidera a 2 dimensao da lista que é o RGB
     int quantMedias = tamMedias / 3;
     int quantComp = tamComp / 3;
 
-    int* indexMaisProximos = (int*) malloc(
-        sizeof(int) * quantMedias + 1);
+    //aloca a memoria que vai ser retornada
+    int* indexMaisProximos = (int*) malloc(sizeof(int) * quantMedias);
 
-
+    //vai rodar por todas as medias que precisam ser feitas
     for(int media = 0; media < quantMedias; media++)
     {
         int indiceMenorDif = 0;
         int corMaisProx = 256*3;
+        //vai rodas todas as comparacoes
         for(int comparacao = 0; comparacao < quantComp; comparacao++)
         {
             int diferenca = 0;
             //disasemble then unwrappe this
+            //vai rodar todas as cores
             for(int cores = 0; cores < 3; cores++)
             {
-                diferenca += abs(medias[media*3+cores] - 
-                    comparacoes[comparacao*3+cores]);
+                char mediaUsada = medias[media*3+cores];
+                char comparacaoUsada = comparacoes[comparacao*3+cores];
+                diferenca += abs(mediaUsada - comparacaoUsada);
             }
 
+            //se essa diferenca for menor que a anterior
+            //salva o indice dessa comparacao e o valor da diferenca
             if(diferenca < corMaisProx)
             {
                 indiceMenorDif = comparacao;
                 corMaisProx = diferenca;
             }
         }
+        //save
         indexMaisProximos[media] = indiceMenorDif;
     }
-
-    indexMaisProximos[quantMedias] = 42069;
-
     return indexMaisProximos;
 }
 
@@ -201,60 +184,38 @@ int* imagemMaisProxima(unsigned char* medias, int tamMedias,
 unsigned char mediaCanalRecorte(coordenadas coordenadasCorte,
     imagem imagemBase, int canal)
 {
+    //vai ser a soma de determinado canal de cor de todos os pixels
     long int somaTemporaria = 0;
 
+    //vai rodas pela altura do bloco passado
     for(int y = coordenadasCorte.top; y < coordenadasCorte.botton; y++)
     {
+        //vai rodar pela largura do bloco passado
         for(int x = coordenadasCorte.left; x < coordenadasCorte.right; x++)
         {
-            somaTemporaria += imagemBase.imagem[pegarItemLista3D(
-                x, y, canal, imagemBase.largura, 3)];
+            int canal = pegarItemLista3D(x, y, canal, imagemBase.largura, 3);
+            somaTemporaria += imagemBase.imagem[canal];
         }
     }
     //3 vem do tamanho da 3d dimensao da imagem
     //como a cor e rgb tem 3 char's no 3 dimensao
 
+    //tamanho do X e Y do bloco passado
+    //usado para calcular a media aritimetica depois
     int deltaX = coordenadasCorte.right - coordenadasCorte.left;
     int deltaY = coordenadasCorte.botton - coordenadasCorte.top;
 
-    unsigned char teste = somaTemporaria / (deltaX * deltaY);
-    return teste;
+    //media aritimetica depois
+    unsigned char mediaAritimetica = somaTemporaria / (deltaX * deltaY);
+
+    return mediaAritimetica;
 }
 
+//pega o x y z de uma lista
 int pegarItemLista3D(int x, int y, int z, int tamX, int tamZ)
 {
+    //como todas a listas aqui sao de uma dimensao simples
+    //imitando uma lista tridimensional
+    //eu preciso usar essa funcao toda fez que quero simular esse 3d
     return (y*(tamZ*tamX)) + (x*tamZ+z);
 }
-
-// void criarBloco(char* listaRetorno, char* listaBase, 
-//     int TP, int BR)
-// {
-
-// }
-
-// void mediaRGBBloco(char* bloco, int largura, int altura, char* resultadoMedia)
-
-// {
-
-//     int quantPixels = largura * altura;
-
-//     //talves isso esteja funcionando mais seila testa dps
-//     char mediaCanalR = mediaCanalLista3D(bloco, quantPixels, 0);
-//     char mediaCanalG = mediaCanalLista3D(bloco, quantPixels, 1);
-//     char mediaCanalB = mediaCanalLista3D(bloco, quantPixels, 2);
-
-// }
-
-// char mediaCanalLista3D(char* lista ,int tamanho, int descolcacaoCanal)
-// {
-
-//     unsigned long int somaCanalR = 0;
-
-//     for(int x = 0; x < tamanho; x++)
-//     {
-//         somaCanalR += bloco[x* 3 + descolcacaoCanal];
-//     }
-
-//     return ceil(somaCanalR / tamanho);
-// }
-
