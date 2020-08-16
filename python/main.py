@@ -136,8 +136,8 @@ def main():
     
 
 #camihos padroes se nao foram especificados
-CAMINHO_REL_IMAGEM_BASE = '../assets/paisagem3.jpg'
-CAMINHO_REL_PASTA_PIXEL = '../assets/texturaMinecraft/'
+CAMINHO_REL_IMAGEM_BASE = '../assets/exemplos/rua.jpg'
+CAMINHO_REL_PASTA_PIXEL = '../assets/coresBasicas/'
 CAMINHO_REL_PASTA_SAIDA = '../assets/saida/'
 CAMINHO_REL_DLL = '../dll/agregador.dll'
 
