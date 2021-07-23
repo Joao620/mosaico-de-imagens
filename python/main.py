@@ -1,10 +1,8 @@
 import json
 from math import floor
-import os
-import sys
+from pathlib import Path
 from ctypes import *
-from getopt import GetoptError, getopt
-
+import parseador 
 from PIL import Image
 
 
@@ -25,7 +23,7 @@ class Pixagens:
 
 def abrir_imagem_base(caminho_imagem, largura_pixagens, altura_pixagens):
     # abre a imagem que vai ser convertida
-    imagem_base = Image.open(CAMINHO_REL_IMAGEM_BASE)
+    imagem_base = Image.open(caminho_imagem)
     # talvez faca um teste antes de converter sla
     imagem_base = imagem_base.convert('RGB')
     # pixagens são as imagens menores que vão compor a imagem base
@@ -50,15 +48,16 @@ def abrir_pixagens(catalogo, caminho_textura):
 # abre o catalogo que esta na pasta de pixagens
 
 
-def carregar_catalogo():
+def carregar_catalogo(caminho_textura):
     try:
-        with open(CAMINHO_REL_PASTA_PIXEL + '_catalogo.json', 'r') as obj:
+        with open(caminho_textura + '/_catalogo.json', 'r') as obj:
             catalogo = json.load(obj)
             # padrao_pixagens é uma lista que contém nessa ordem
             # largura, altura e o padrao de cores das imagens
             padrao_pixagens = catalogo.pop('padrao_imagens')
             return (catalogo, *padrao_pixagens)
-    except:
+    except Exception as e:
+        print(e) 
         raise Exception("O catalogo não existe ou esta estraviado")
 
 # corta a imagem para conter uma quantidade extada de pixagens
@@ -75,7 +74,7 @@ def ajustar_tam(imagem_PIL, largura_pixagens, altura_pixagens):
 
     # checa se o tamanho ja esta certo e nao precisa cortar
     if nova_altura == imagem_PIL.width and nova_largura == imagem_PIL.height:
-        return imagem_PIL, pixagensX, pixagensY
+        return imagem_PIL
 
     # corta as bordas da imagem para caber uma quantidade exata de pixagens
     nova_imagem = imagem_PIL.crop((0, 0, nova_largura, nova_altura))
@@ -83,25 +82,23 @@ def ajustar_tam(imagem_PIL, largura_pixagens, altura_pixagens):
     return nova_imagem
 
 # salva o nome
+def salvar_img(imagem_PIL, caminho_saida):
+    caminho_obj = Path(caminho_saida)
 
-
-def salvar_img(imagem_PIL):
     contador = 0
     nome_img = 'saida' + str(contador) + '.png'
 
-    while nome_img in os.listdir(CAMINHO_REL_PASTA_SAIDA):
+    while caminho_obj.joinpath(nome_img).exists():
         contador += 1
         nome_img = 'saida' + str(contador) + '.png'
 
-    caminho_img = CAMINHO_REL_PASTA_SAIDA + nome_img
+    caminho_img = caminho_obj.joinpath(nome_img).resolve()
 
     imagem_PIL.save(caminho_img)
 
     return 0
 
 # configura os argtypes e restypes das dll's
-
-
 def configurarDll(caminhoDll):
     DLL = CDLL(caminhoDll)
 
@@ -109,8 +106,7 @@ def configurarDll(caminhoDll):
     DLL.media.argtypes = [POINTER(Imagem), c_int, c_int]
 
     DLL.imagemMaisProxima.restype = c_void_p
-    DLL.imagemMaisProxima.argtypes = [c_char_p, c_int, c_char_p, c_int, c_int]
-
+    DLL.imagemMaisProxima.argtypes = [c_char_p, c_int, c_char_p, c_int]
     return DLL
 
 
@@ -153,23 +149,23 @@ def buscar_pixagens(funcao_DLL, medias_blocos_imagem, tamanho_medias_blocos, cat
     return indices
 
 
-def main():
+def main(path_imagem, path_textura, path_saida, path_dll):
     # abre o catalo das pixagens
 
     pixagens = Pixagens()
 
-    catalogo, pixagens.largura, pixagens.altura, __ = carregar_catalogo()
+    catalogo, pixagens.largura, pixagens.altura, __ = carregar_catalogo(path_textura)
 
-    pixagens.lista = abrir_pixagens(catalogo, CAMINHO_REL_PASTA_PIXEL)
+    pixagens.lista = abrir_pixagens(catalogo, path_textura)
 
     imagem_base = abrir_imagem_base(
-        CAMINHO_REL_IMAGEM_BASE, pixagens.largura, pixagens.altura)
+        path_imagem, pixagens.largura, pixagens.altura)
 
     pixagensX = floor(imagem_base.width / pixagens.largura)
     pixagensY = floor(imagem_base.height / pixagens.altura)
     quant_pixagens = pixagensX * pixagensY
 
-    DLL = configurarDll(CAMINHO_REL_DLL)
+    DLL = configurarDll(path_dll)
 
     medias_blocos_imagem = gerar_medias(DLL.media, imagem_base, pixagens)
 
@@ -179,7 +175,7 @@ def main():
         DLL.imagemMaisProxima, medias_blocos_imagem, tamanho_medias_blocos, catalogo, 2)
 
     # colagem é a imagem que vai ser montada por pixagens
-    colagem = Image.new(imagem_base.mode, imagem_base.size)
+    colagem = Image.new('RGBA', imagem_base.size)
 
     # vai colar as imagens escolidas na colagem
     for y in range(pixagensY):
@@ -188,37 +184,18 @@ def main():
             indice_escolido = indices[y*pixagensX + x]
             colagem.paste(pixagens.lista[indice_escolido], pontos_upLeft)
 
-    salvar_img(colagem)
+    colagem.putalpha(200)
+    img_saida = imagem_base.convert('RGBA')
+    img_saida.alpha_composite(colagem)
+    salvar_img(img_saida, path_saida)
 
     return 0
 
-
-# camihos padroes se nao foram especificados
-CAMINHO_REL_IMAGEM_BASE = '../assets/exemplos/paisagem2.jpg'
-CAMINHO_REL_PASTA_PIXEL = '../assets/texturaMinecraft/'
-CAMINHO_REL_PASTA_SAIDA = '../assets/saida/'
-CAMINHO_REL_DLL = '../dll/agregador.dll'
-
 if __name__ == '__main__':
-    # pega parametros passados pela linha de comando
-    if(len(sys.argv) > 1):
-        try:
-            opts, args = getopt(sys.argv[1:], "b:p:s:d:")
-        except GetoptError:
-            print("algum argumento invalido")
-            sys.exit(-1)
+    caminhos = parseador.comand_line()
+    path_imagem = caminhos['path_imagem']
+    path_textura = caminhos['path_textura']
+    path_saida= caminhos['path_saida']
+    path_dll= caminhos['path_dll']
 
-        for opt, arg in opts:
-            if opt == '-b':
-                CAMINHO_REL_IMAGEM_BASE = arg
-            elif opt == '-d':
-                CAMINHO_REL_DLL = arg
-            elif opt == '-p':
-                CAMINHO_REL_PASTA_PIXEL = arg
-                if CAMINHO_REL_PASTA_PIXEL[-1] != '/':
-                    CAMINHO_REL_PASTA_PIXEL += '/'
-            elif opt == '-s':
-                CAMINHO_REL_PASTA_SAIDA = arg
-                if CAMINHO_REL_PASTA_SAIDA[-1] != '/':
-                    CAMINHO_REL_PASTA_PIXEL += '/'
-    main()
+    main(path_imagem, path_textura, path_saida, path_dll)

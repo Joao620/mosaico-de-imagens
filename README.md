@@ -12,6 +12,7 @@ Linux:
 git clone https://github.com/Joao620/mosaico-de-imagens.git
 cd mosaico-de-imagens
 pip install -r requerimento.txt
+make
 ```
 
 
